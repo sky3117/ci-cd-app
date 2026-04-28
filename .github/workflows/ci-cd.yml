@@ -5,6 +5,10 @@ on:
     branches: ["main"]
   pull_request:
 
+permissions:
+  packages: write
+  contents: read
+
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
@@ -30,7 +34,9 @@ jobs:
     - name: Build Docker Image
       run: |
         IMAGE_NAME=ghcr.io/${{ github.repository }}
-        docker build -t $IMAGE_NAME:latest .
+        docker build \
+          --label org.opencontainers.image.source=https://github.com/sky3117/ci-cd-app \
+          -t $IMAGE_NAME:latest .
         docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ github.sha }}
 
     - name: Push Docker Image
@@ -38,5 +44,3 @@ jobs:
         IMAGE_NAME=ghcr.io/${{ github.repository }}
         docker push $IMAGE_NAME:latest
         docker push $IMAGE_NAME:${{ github.sha }}
-
-   
