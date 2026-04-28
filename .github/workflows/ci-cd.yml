@@ -39,8 +39,4 @@ jobs:
         docker push $IMAGE_NAME:latest
         docker push $IMAGE_NAME:${{ github.sha }}
 
-    - name: Slack Notification
-      run: |
-        curl -X POST -H 'Content-type: application/json' \
-        --data '{"text":"✅ CI/CD Successful!"}' \
-        ${{ secrets.SLACK_WEBHOOK_URL }}
+   
